@@ -33,7 +33,7 @@
                 "deploy",
                 "fakestock",
                 "--image",
-                "gcr.io/$PROJECT_ID/fakestock:$COMMIT_SHA",
+                "gcr.io/$PROJECT_ID/fakestock:$SHORT_SHA",
                 "--region",
                 "us-east1",
                 "--platform",
