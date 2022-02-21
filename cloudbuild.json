@@ -38,8 +38,7 @@
                 "us-east1",
                 "--platform",
                 "managed"
-            ],
-            "images": "gcr.io/$PROJECT_ID/fakestock:$COMMIT_SHA"
+            ]
         }
     ]
 }
