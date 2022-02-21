@@ -17,8 +17,13 @@ var (
 
 func main() {
 	upSince := time.Now()
+	tickersFile := "tickers.csv"
 	// read the CSV file
-	tickers, err := LoadTickers("/app/tickers.csv")
+	// use FAKESTOCK_TICKERS environment variable to override the default if present
+	if os.Getenv("FAKESTOCK_TICKERS") != "" {
+		tickersFile = os.Getenv("FAKESTOCK_TICKERS")
+	}
+	tickers, err := LoadTickers(tickersFile)
 	if err != nil {
 		panic(err)
 	}
