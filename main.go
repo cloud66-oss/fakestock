@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -17,16 +18,26 @@ var (
 
 func main() {
 	upSince := time.Now()
-	tickersFile := "tickers.csv"
+	dataPath := "."
 	// read the CSV file
-	// use FAKESTOCK_TICKERS environment variable to override the default if present
-	if os.Getenv("FAKESTOCK_TICKERS") != "" {
-		tickersFile = os.Getenv("FAKESTOCK_TICKERS")
+	// use FAKESTOCK_PATH environment variable to override the default if present
+	if os.Getenv("FAKESTOCK_PATH") != "" {
+		dataPath = os.Getenv("FAKESTOCK_PATH")
 	}
-	tickers, err := LoadTickers(tickersFile)
+
+	tickers := make(map[string]*Ticker)
+	startPricesFile := filepath.Join(dataPath, "nasdaq.csv")
+	err := LoadStartPrices(startPricesFile, NASDAQ, tickers)
 	if err != nil {
 		panic(err)
 	}
+	startPricesFile = filepath.Join(dataPath, "nyse.csv")
+	err = LoadStartPrices(startPricesFile, NYSE, tickers)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Loaded %d tickers\n", len(tickers))
 
 	quit := make(chan struct{})
 
@@ -59,7 +70,6 @@ func main() {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"NYSE":   NYSE,
 			"NASDAQ": NASDAQ,
-			"AMEX":   AMEX,
 		})
 	})
 	e.GET("/_ping", func(c echo.Context) error {

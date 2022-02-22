@@ -9,9 +9,11 @@ FROM alpine
 LABEL maintainer="Cloud 66 Engineering <hello@cloud66.com>"
 
 RUN mkdir /app
-# Copy any other files required in the final image here
-COPY tickers.csv /app/tickers.csv
+
+COPY nasdaq.csv /app/nasdaq.csv
+COPY nyse.csv /app/nyse.csv
+
 COPY --from=build /app/fakestock/fakestock /app
-ENV FAKESTOCK_TICKERS=/app/tickers.csv
+ENV FAKESTOCK_PATH=/app
 EXPOSE 8080
 ENTRYPOINT ["/app/fakestock"]

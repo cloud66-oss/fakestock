@@ -13,13 +13,13 @@ The API has a few endpoints:
 - `/tickers` returns all tickers stored in the system.
 - `/tickers/:symbol` returns info on the given symbol.
 
-All symbols are loaded from `tickers.csv` when the service starts and allocated a random price between 1 and 1000. The service then randomly changes the price every 5 seconds. 1/3 of the tickers will not change while the other thirds will either go up or down by 10 units. 
+All symbols are loaded from CSV files when the service starts. The service then randomly changes the price every 5 seconds randomly by a percentage of the current price.
 
 ## Hosting
 A hosted version of this service runs on https://test.marketinfo.dev/ and is provided by Cloud 66 as a sample. You can host the service inside or outside a Docker container if you wish. 
 
 ## Credits
-`tickers.csv` is downloaded from https://dumbstockapi.com/
+Start price files are from NASDAQ website.
 
 This repository is maintained by Cloud 66 (https://www.cloud66.com)
 
